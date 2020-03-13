@@ -36,6 +36,9 @@ func (self *_object) getOwnProperty(name string) *_property {
 func (self *_object) getProperty(name string) *_property {
 	return self.objectClass.getProperty(self, name)
 }
+func (self *_object) getProperties() map[string]_property {
+	return self.objectClass.getProperties(self)
+}
 
 // 8.12.3
 func (self *_object) get(name string) Value {
@@ -122,7 +125,9 @@ func (self *_object) _exists(name string) bool {
 	_, exists := self.property[name]
 	return exists
 }
-
+func (self *_object) _readAll() map[string]_property {
+	return self.property
+}
 func (self *_object) _read(name string) (_property, bool) {
 	property, exists := self.property[name]
 	return property, exists

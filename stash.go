@@ -90,6 +90,61 @@ func (self *_objectStash) setValue(name string, value Value, throw bool) {
 		self.setBinding(name, value, throw)
 	}
 }
+func (self *_objectStash) getAllBindings() map[string]interface{}  {
+	result := make(map[string] interface{})
+	ps := self.object.getProperties()
+	ownProperties := self.getInlineProperties()
+	for k,v := range ps  {
+		
+	    if "" != ownProperties[k] {
+	       continue
+        }
+		result[k] = v.Get().value
+		//result[k] = self.object.get(k).value
+	}
+	return result
+}
+func (self *_objectStash) getInlineProperties() map[string]string {
+	sl := []string{
+		"console",
+		"eval",
+		"parseInt",
+		"parseFloat",
+		"isNaN",
+		"isFinite",
+		"decodeURI",
+		"decodeURIComponent",
+		"encodeURI",
+		"encodeURIComponent",
+		"escape",
+		"unescape",
+		"Object",
+		"Function",
+		"Array",
+		"String",
+		"Boolean",
+		"Number",
+		"Math",
+		"Date",
+		"RegExp",
+		"Error",
+		"EvalError",
+		"TypeError",
+		"RangeError",
+		"ReferenceError",
+		"SyntaxError",
+		"URIError",
+		"JSON",
+		"undefined",
+		"NaN",
+		"Infinity",
+	}
+	mp := make(map[string]string)
+	for _,v := range sl {
+		mp[v] = v
+	}
+	return mp
+}
 
 func (self *_objectStash) getBinding(name string, throw bool) Value {
 	if self.object.hasProperty(name) {

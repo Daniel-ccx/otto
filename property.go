@@ -79,6 +79,13 @@ func (self _property) copy() *_property {
 	return &property
 }
 
+func (self _property) Get() Value {
+	switch value := self.value.(type) {
+	case Value:
+		return value
+	}
+	return Value{}
+}
 func (self _property) get(this *_object) Value {
 	switch value := self.value.(type) {
 	case Value:
